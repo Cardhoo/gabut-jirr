@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Penelitian Akademik: Layanan IT Helpdesk — PT Taiyo Sinar Raya Teknik</title>
+    <meta name="description"
+        content="Survei penelitian akademik tentang Pengaruh Ketanggapan dan Jaminan Layanan IT Helpdesk terhadap Kepuasan Staf di PT Taiyo Sinar Raya Teknik.">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+    <!-- Logo BSI Pojok Atas -->
+    <div class="header-logo">
+        <img src="KDK.png" alt="Kampus Digital Kreatif" class="logo-kdk">
+        <img src="logobsi.png" alt="Logo Universitas BSI" class="logo-bsi">
+    </div>
+
+    <!-- Main Container -->
+    <div id="app" class="glass-container">
+
+        <!-- ==================== 1. WELCOME SCREEN ==================== -->
+        <section id="welcome-screen" class="screen active">
+            <!-- Live Stats Banner -->
+            <div class="stats-banner fade-up">
+                <div class="stat-item">
+                    <span class="stat-number" id="landing-visitors">0</span>
+                    <span class="stat-label">Pengunjung</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-number" id="landing-respondents">0</span>
+                    <span class="stat-label">Sudah Mengisi</span>
+                </div>
+            </div>
+
+
+            <div id="blocked-notice" class="blocked-notice" style="display:none;">
+                ✅ Anda sudah pernah mengisi survei ini dari perangkat ini. Terima kasih!
+            </div>
+
+            <h1 class="fade-up delay-1">Halo, Selamat Datang! 🎓</h1>
+            <p class="fade-up delay-2" style="text-align: justify;">
+                Perkenalkan, saya <strong>Ricky Farhan Ricardo</strong>, mahasiswa semester 2 dari <strong>Universitas
+                    Bina Sarana Informatika (BSI)</strong>. Saat ini saya sedang melangsungkan penelitian tugas akhir
+                dengan topik <em>"Pengaruh Ketanggapan dan Jaminan Layanan IT Helpdesk terhadap Kepuasan Staf di PT
+                    Taiyo Sinar Raya Teknik"</em>.<br><br>
+                Partisipasi Anda sangat berharga bagi studi ini. <strong>Kami sangat memohon kesediaan Anda untuk
+                    mengisi setiap pertanyaan dengan jujur, obyektif, dan sepenuh hati</strong>, sebab setiap jawaban
+                tulus yang Anda berikan akan menjadi acuan terpenting bagi perbaikan ke depan.<br><br>
+                Seluruh data yang diisi <strong>bersifat sementara, hanya digunakan untuk keperluan akademis, dan akan
+                    langsung dihancurkan</strong> begitu tugas ini selesai. Kepercayaan Anda sangat saya hargai, terima
+                kasih!
+            </p>
+            <button id="start-btn" class="btn primary-btn full-width fade-up delay-3"
+                onclick="showScreen('identity-screen')">Bersedia &amp; Mulai Survei</button>
+        </section>
+
+
+        <section id="identity-screen" class="screen hidden">
+            <h2 class="fade-up">Data Partisipan</h2>
+
+            <div class="form-group fade-up delay-1">
+                <label for="userName">Nama Lengkap</label>
+                <input type="text" id="userName" placeholder="Contoh: Ricky Farhan Ricardo" autocomplete="off">
+            </div>
+
+            <div class="form-group fade-up delay-2">
+                <label>Jenis Kelamin</label>
+                <div class="option-group" id="gender-group">
+                    <button class="option-btn" onclick="selectOption('gender','Laki-laki', this)">Laki-laki</button>
+                    <button class="option-btn"
+                        onclick="selectOption('gender','Perempuan', this, true)">Perempuan</button>
+                </div>
+            </div>
+
+            <div class="form-group fade-up delay-3">
+                <label>Status Pernikahan</label>
+                <div class="option-group" id="marital-group">
+                    <button class="option-btn" onclick="selectOption('marital','Belum Menikah', this)">Belum
+                        Menikah</button>
+                    <button class="option-btn" onclick="selectOption('marital','Menikah', this)">Menikah</button>
+                </div>
+            </div>
+
+            <div class="nav-buttons fade-up delay-4">
+                <button class="btn secondary-btn" onclick="showScreen('welcome-screen')">Kembali</button>
+                <button class="btn primary-btn" onclick="startSurvey()">Lanjutkan</button>
+            </div>
+        </section>
+
+
+        <section id="survey-screen" class="screen hidden">
+            <div class="progress-bar-container fade-up">
+                <div class="progress-bar" id="survey-progress"></div>
+            </div>
+            <div id="survey-dynamic-content">
+                <p class="question-counter" id="question-counter"></p>
+                <h3 id="question-text" class="question-title"></h3>
+                <div class="rating-options" id="rating-container">
+                    <!-- Buttons injected by JS -->
+                </div>
+            </div>
+            <div class="nav-buttons fade-up delay-3">
+                <button class="btn secondary-btn" id="prev-btn" onclick="prevQuestion()" disabled>Kembali</button>
+                <button class="btn primary-btn" id="next-btn" onclick="nextQuestion()">Selanjutnya</button>
+            </div>
+        </section>
+
+
+        <section id="feedback-screen" class="screen hidden">
+            <h2 class="fade-up">Satu Langkah Terakhir! 🚀</h2>
+            <div class="form-group fade-up delay-1">
+                <label for="feedbackText" style="line-height:1.5;">
+                    Kalau boleh kasih satu pesan singkat buat tim IT di <strong>PT Taiyo Sinar Raya Teknik</strong>, apa
+                    yang ingin Anda sampaikan?
+                </label>
+                <textarea id="feedbackText" rows="4"
+                    placeholder="Tulis pesan, saran, atau kritik Anda di sini."></textarea>
+            </div>
+            <div class="nav-buttons fade-up delay-2">
+                <button class="btn secondary-btn" onclick="goBackToLastQuestion()">Periksa Kembali</button>
+                <button class="btn primary-btn" onclick="submitSurvey()">Kirim Survei Final</button>
+            </div>
+        </section>
+
+
+        <section id="success-screen" class="screen hidden" style="text-align:center;">
+            <div class="success-icon fade-up">✔️</div>
+            <h1 class="fade-up delay-1">Terima Kasih Banyak! 🎉</h1>
+            <p class="fade-up delay-2" style="text-align:center;">
+                Jawaban Anda telah tersimpan dengan aman ke dalam sistem penelitian kami. Bantuan Anda sangat berarti
+                bagi kelulusan tugas akhir saya. Semoga hari Anda selalu menyenangkan!
+            </p>
+            <button class="btn primary-btn full-width fade-up delay-3" onclick="location.reload()">Selesai &amp;
+                Keluar</button>
+        </section>
+
+
+        <section id="admin-screen" class="screen hidden">
+            <h2>📊 Dashboard Analitik Peneliti</h2>
+
+            <!-- Top Stats Cards -->
+            <div class="admin-stats">
+                <div class="stat-card">
+                    <span id="total-visitors">0</span>
+                    Total Kunjungan
+                </div>
+                <div class="stat-card">
+                    <span id="total-resp">0</span>
+                    Total Responden
+                </div>
+                <div class="stat-card">
+                    <span id="avg-score">0.0</span>
+                    Rata-rata Skor
+                </div>
+            </div>
+
+            <!-- Tab Navigation -->
+            <div class="admin-tabs">
+                <button class="tab-btn active" onclick="switchTab('summary', this)">Ringkasan</button>
+                <button class="tab-btn" onclick="switchTab('perquestion', this)">Per Pertanyaan</button>
+                <button class="tab-btn" onclick="switchTab('rawdata', this)">Data Mentah</button>
+            </div>
+
+            <!-- Tab: Ringkasan -->
+            <div id="tab-summary" class="tab-content active">
+                <div class="chart-wrapper">
+                    <canvas id="overallChart" height="180"></canvas>
+                </div>
+                <div class="chart-row">
+                    <div class="chart-wrapper">
+                        <canvas id="genderChart" height="180"></canvas>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="maritalChart" height="180"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab: Per Pertanyaan -->
+            <div id="tab-perquestion" class="tab-content">
+                <div id="question-charts-grid" class="charts-grid">
+                    <!-- Dynamically generated pie charts per question -->
+                </div>
+            </div>
+
+            <!-- Tab: Data Mentah -->
+            <div id="tab-rawdata" class="tab-content">
+                <button class="btn primary-btn export-btn" onclick="exportToCSV()">📥 Unduh Data ke Excel / SPSS
+                    (CSV)</button>
+                <div class="admin-table-container">
+                    <table id="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Identitas</th>
+                                <th>Status</th>
+                                <th>Skor</th>
+                                <th>Pesan</th>
+                                <th>Waktu</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-tbody">
+                            <!-- Data rows injected by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <button class="btn full-width"
+                style="margin-top:20px; background: linear-gradient(135deg, #dc2626, #ef4444); border-color: #dc2626; color: white;"
+                onclick="resetTestData()">🔄 Reset Data untuk Test Ulang</button>
+            <button class="btn secondary-btn full-width" style="margin-top:10px;" onclick="location.reload()">Keluar
+                Panel Peneliti</button>
+        </section>
+
+    </div>
+
+    <!-- Footer Copyright (Hidden Admin Trigger) -->
+    <footer>
+        <p id="copyright-text" onclick="handleCopyrightClick()">&copy; xxcrdhoo</p>
+    </footer>
+
+
+    <div id="pin-popup" class="custom-popup hidden">
+        <div class="popup-box">
+            <h3>🔐 Login Panel Analitik</h3>
+            <p style="margin-bottom: 15px; font-size: 14px;">Masukkan PIN otorisasi peneliti:</p>
+            <input type="password" id="admin-pin" placeholder="****">
+            <p id="pin-error" class="error-msg"></p>
+            <div class="popup-actions">
+                <button class="btn secondary-btn" onclick="closePopup('pin-popup')">Batalkan</button>
+                <button class="btn primary-btn" onclick="verifyPin()">Masuk</button>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="warning-popup" class="custom-popup hidden">
+        <div class="popup-box warning-box">
+            <div class="warning-icon" id="warning-icon">⚠️</div>
+            <h3 id="warning-title">Akses Ditolak</h3>
+            <p id="warning-text">Tindakan ini tidak diizinkan.</p>
+            <div class="popup-actions center">
+                <button class="btn primary-btn" id="warning-close-btn" onclick="closePopup('warning-popup')">Saya
+                    Mengerti</button>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="reset-popup" class="custom-popup hidden">
+        <div class="popup-box warning-box">
+            <div class="warning-icon">🗑️</div>
+            <h3>Konfirmasi Reset</h3>
+            <p style="margin-bottom: 15px; font-size: 14px;">Apakah Anda yakin ingin mereset seluruh data uji coba? Semua riwayat dan responden akan dihapus total!</p>
+            <div class="popup-actions center">
+                <button class="btn secondary-btn" onclick="closePopup('reset-popup')" style="margin-right:10px;">Batalkan</button>
+                <button class="btn" style="background: linear-gradient(135deg, #dc2626, #ef4444); color: white; border: none;" onclick="executeResetData()">Ya, Reset</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK (Compat) -->
+    <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-database-compat.js"></script>
+    
+    <script src="script.js"></script>
+</body>
+
+</html>

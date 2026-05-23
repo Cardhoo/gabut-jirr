@@ -85,7 +85,7 @@ setTimeout(updateLandingStats, 200);
 
 
 var questions = [
-    // === KETANGGAPAN (Responsiveness) ===
+    // KETANGGAPAN 
     "Seberapa cepat biasanya tim IT merespon ketika Anda melaporkan masalah perangkat kerja?",
     "Menurut Anda, mudah atau sulit untuk menghubungi tim IT saat Anda sedang membutuhkan bantuan?",
     "Apakah tim IT biasanya memberitahu perkiraan waktu kapan masalah Anda akan selesai ditangani?",
@@ -94,7 +94,7 @@ var questions = [
     "Bagaimana kesabaran tim IT saat Anda menjelaskan kendala yang mungkin terdengar sepele atau terjadi berulang kali?",
     "Secara keseluruhan, seberapa puas Anda dengan kecepatan penanganan masalah dari awal lapor sampai tuntas?",
 
-    // === JAMINAN (Assurance) ===
+    // JAMINAN
     "Apakah Anda merasa data dan file kerja di komputer Anda aman saat sedang diperbaiki oleh tim IT?",
     "Pernahkah muncul masalah baru di komputer Anda setelah selesai diperbaiki oleh tim IT?",
     "Menurut pengamatan Anda, apakah tim IT sudah cukup ahli dan kompeten dalam menangani masalah teknis?",
@@ -124,13 +124,13 @@ var surveyData = {
 };
 
 
-// Block right-click
+
 document.addEventListener("contextmenu", function (e) {
     e.preventDefault();
     triggerAntiInspectWarning();
 });
 
-// Block keyboard shortcuts
+
 document.addEventListener("keydown", function (e) {
     var key = e.key ? e.key.toLowerCase() : '';
 
@@ -141,7 +141,7 @@ document.addEventListener("keydown", function (e) {
         return;
     }
 
-    // Ctrl+Shift+I/C/J, Ctrl+U, Ctrl+S
+    
     if (e.ctrlKey) {
         if (e.shiftKey && (key === "i" || key === "c" || key === "j")) {
             e.preventDefault();
